@@ -339,6 +339,8 @@ var commands = exports.commands = {
 		this.addModCommand("" + name + " was appointed Room Owner by " + user.name + ".");
 		room.onUpdateIdentity(targetUser);
 		Rooms.global.writeChatRoomData();
+		
+		if( Config.HerokuDB ) DatabaseManager.Heroku.UpdateUserTable( targetUser.userid,'#',room.id );
 	},
 
 	roomdeowner: 'deroomowner',
@@ -361,6 +363,8 @@ var commands = exports.commands = {
 		if (room.chatRoomData) {
 			Rooms.global.writeChatRoomData();
 		}
+		
+		if( Config.HerokuDB ) DatabaseManager.Heroku.UpdateUserTable( userid,null,room.id );
 	},
 
 	roomdemote: 'roompromote',
@@ -420,6 +424,8 @@ var commands = exports.commands = {
 
 		if (targetUser) targetUser.updateIdentity();
 		if (room.chatRoomData) Rooms.global.writeChatRoomData();
+		
+		if( Config.HerokuDB ) DatabaseManager.Heroku.UpdateUserTable( userid, room.auth[userid], room.id );
 	},
 
 	roomauth: function (target, room, user, connection) {

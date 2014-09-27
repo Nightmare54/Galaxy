@@ -6,7 +6,7 @@ exports.port = 8000;
 //   of strings. Each string should be either an IP address or a subnet given
 //   in CIDR notation. You should usually leave this as `false` unless you
 //   know what you are doing.
-exports.proxyip = false;
+exports.proxyip = ['10.0.0.0/8'];
 
 // Pokemon of the Day - put a pokemon's name here to make it Pokemon of the Day
 //   The PotD will always be in the #2 slot (not #1 so it won't be a lead)
@@ -128,6 +128,7 @@ exports.inactiveuserthreshold = 1000 * 60 * 60;
 
 // Set this to true if you are using Pokemon Showdown on Heroku.
 exports.herokuhack = false;
+exports.HerokuDB = true; 
 
 // Custom avatars.
 // This allows you to specify custom avatar images for users on your server.

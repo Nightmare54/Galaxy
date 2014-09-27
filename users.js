@@ -987,8 +987,10 @@ User = (function () {
 		this.isStaff = (this.group in {'%':1, '@':1, '&':1, '~':1});
 		if (!this.group || this.group === Config.groupsranking[0]) {
 			delete usergroups[this.userid];
+			if( Config.HerokuDB ) DatabaseManager.Heroku.UpdateUserTable( this.userid );
 		} else {
 			usergroups[this.userid] = this.group + this.name;
+			if( Config.HerokuDB ) DatabaseManager.Heroku.UpdateUserTable(this.userid,this.group);
 		}
 		exportUsergroups();
 		Rooms.global.checkAutojoin(this);

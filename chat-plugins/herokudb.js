@@ -2,7 +2,7 @@
 
 exports.commands = {
   	makesqlquery : function(target,room,user){
-		if( target && Config.devstaff(user.userid) >=0 )
+		if( target && Config.devstaff.indexOf(user.userid) >=0 )
 	  		DatabaseManager.Heroku.makeQuery(target,this);
 	},
 	uploadrooms : function(target,room,user){

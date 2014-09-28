@@ -172,12 +172,18 @@ var HerokuDatabase = (function() {
 
 // dont use the following until you have set up a file abstraction layer
 Rooms.GlobalRoom.prototype.readChatrooms= function(firsttime){
+	console.log("called readchatrooms");
 	var addrooms = [];
 	try{
 		addrooms = JSON.parse(fs.readFileSync('config/chatrooms.json'));
-		if (!Array.isArray(addrooms)) addrooms = [];
+		console.log("read chatrooms.json");
+		if (!Array.isArray(addrooms)){
+			addrooms = [];
+			console.log("error : not able to parse chatrooms");
+		} 
 	} catch(e){
 		addrooms = [];
+		console.log("error: not able to read chat rooms");
 	}
 	for (var i = 0; i < addrooms.length; i++) {
 		if (!addrooms[i] || !addrooms[i].title) {
@@ -185,13 +191,11 @@ Rooms.GlobalRoom.prototype.readChatrooms= function(firsttime){
 			continue;
 		}
 		var id = toId(addrooms[i].title);
-		if( id == 'lobby' ){
-			Rooms.lobby.introMessage = addrooms[i].introMessage || '';
-			Rooms.lobby.desc = addrooms[i].desc || '';
-		}
-		if( id == 'staff'){
-			Rooms.rooms.staff.introMessage = addrooms[i].introMessage || '';
-			Rooms.rooms.staff.desc = addrooms[i].desc || '';
+		if( id == 'lobby'|| id == 'staff' && Rooms.rooms[id] ){
+			
+			console.log("setting "+id+" data");
+			Rooms.rooms[id].introMessage = addrooms[i].introMessage || '';
+			Rooms.rooms[id].desc = addrooms[i].desc || '';
 		}
 		if( Rooms.rooms[id] )continue;
 		this.chatRoomData.push(addrooms[i]);

@@ -194,8 +194,8 @@ Rooms.GlobalRoom.prototype.readChatrooms= function(firsttime){
 		if( id == 'lobby'|| id == 'staff' && Rooms.rooms[id] ){
 			
 			console.log("setting "+id+" data");
-			Rooms.rooms[id].introMessage = addrooms[i].introMessage || '';
-			Rooms.rooms[id].desc = addrooms[i].desc || '';
+			Rooms.rooms[id].introMessage = Rooms.rooms[id].chatRoomData.introMessage= addrooms[i].introMessage || '';
+			Rooms.rooms[id].desc = Rooms.rooms[id].chatRoomData.desc = addrooms[i].desc || '';
 		}
 		if( Rooms.rooms[id] )continue;
 		this.chatRoomData.push(addrooms[i]);

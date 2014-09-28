@@ -47,7 +47,6 @@ var HerokuDatabase = (function() {
 		pgdb.connect( this.DB_URL , function(err, client, done){
 			if(err){
 				console.log('Not connected to pgdb (userdb)'+err);
-				self.errors.push('Error loading Heroku PSQL database. check logs for details');
 				return;
 			}
 			
@@ -75,7 +74,6 @@ var HerokuDatabase = (function() {
 		var pgdb = require('pg');
 		pgdb.connect(this.DB_URL, function(err, client, done){
 			if(err){
-				self.errors.push('error in connecting to db');
 				console.log('error while writing num rooms');
 				return;
 			}
@@ -112,7 +110,6 @@ var HerokuDatabase = (function() {
 		pgdb.connect( this.DB_URL , function(err,client,done){
 			if(err){
 				console.log('User table not updated'+ err);
-				self.errors.push('error in addUser, unable to connect to database');
 				return;
 			}
 			if(room){
@@ -141,7 +138,6 @@ var HerokuDatabase = (function() {
 		var pgdb = require('pg');
 		pgdb.connect(this.DB_URL, function(err, client, done){
 			if(err){
-				self.errors.push('error in connecting to db');
 				console.log('error while writing num rooms');
 				return;
 			}
@@ -157,7 +153,6 @@ var HerokuDatabase = (function() {
 		var self=this;
 		pgdb.connect(this.DB_URL, function(err, client, done){
 			if(err){
-				self.errors.push('error in connecting to db');
 				console.log('error');
 				return;
 			}
@@ -176,24 +171,52 @@ var HerokuDatabase = (function() {
 })();
 
 // dont use the following until you have set up a file abstraction layer
-/*
+Rooms.GlobalRoom.prototype.readChatrooms= function(firsttime){
+	var addrooms = [];
+	try{
+		addrooms = JSON.parse(fs.readFileSync('config/chatrooms.json'));
+		if (!Array.isArray(addrooms)) addrooms = [];
+	} catch(e){
+		addrooms = [];
+	}
+	for (var i = 0; i < addrooms.length; i++) {
+		if (!addrooms[i] || !addrooms[i].title) {
+			console.log('ERROR: Room number ' + i + ' has no data.');
+			continue;
+		}
+		var id = toId(addrooms[i].title);
+		if( rooms[id] )continue;
+		this.chatRoomData.push(addrooms[i]);
+		console.log("NEW CHATROOM: " + id);
+		var room = rooms[id] = new ChatRoom(id, addrooms[i].title, addrooms[i]);
+		this.chatRooms.push(room);
+		if (room.autojoin) this.autojoin.push(id);
+		if (room.staffAutojoin) this.staffAutojoin.push(id);
+	}
+	if( firsttime && DatabaseManager && DatabaseManager.Heroku ){
+		DatabaseManager.Heroku.initUserlists();
+	}
+};
+
 var fileStorage = (function(){
 	function fileStorage(){
 	 
 		this.errors = [];
-		this.chatdataurl = (process.env.dataurl)?(process.env.dataurl+'/chatroomedit.php'):'';
+		this.chatreadurl = process.env.chatreadurl || '';
 		this.readChatrooms();
 	}
 	fileStorage.prototype.dbtype = 'ftp|http';
 	
 	fileStorage.prototype.readChatrooms = function(output){
-		if(!this.chatdataurl){
+		if(!this.chatreadurl){
+			if(output && output.sendReply) output.sendReply("NO URL SET TO READ CHATROOMS");
 			console.log("NO URL SET TO READ CHATROOMS");
 			return;
 		}
-		var url = this.chatdataurl;
+		var url = this.chatreadurl;
 		needle.get(url,function(err,resp){
 			if(err){
+				if(output && output.sendReply) output.sendReply('Unable to read chat rooms' + err);
 				console.log('Unable to read chat rooms' + err);
 				return;
 			}
@@ -203,44 +226,35 @@ var fileStorage = (function(){
 					console.log('error in loading chatrooms.json');
 					return;
 				}
-				if(output) output.sendReply('load success... creating rooms...');
+				if(output && output.sendReply) output.sendReply('load success... creating rooms...');
 				console.log('load success... creating rooms...');
-				if(Rooms && Rooms.global) Rooms.global.readChatrooms(true);
+				if(global.Rooms && Rooms.global) Rooms.global.readChatrooms(true);
 			});
 		});
 	};
-	fileStorage.prototype.writeRoomData = function(output){
-		if( Config.NoWriteChatData ) return false;
-		var chatdata = JSON.stringify(Rooms.global.chatRoomData).replace(/\{"title"\:/g, '\n{"title":').replace(/\]$/, '\n]');
-		var data = {
-			user: process.env.requser|| '',
-			pass: process.env.reqpass || '',
-			chatroomfile: chatdata
-		}
-		if(!this.chatdataurl){
-			console.log('no request url set for chatrooms ' );
-			return false;
-		}
-		var url = this.chatdataurl;
-		needle.post(url, data, function(err, resp, body) {
-			if(err){
-				console.error(err);
-				if( output && output.sendReply ) output.sendReply('error in uploading chatrooms.json . check logs');
-				return;
-			}
-			// console.log('chatrooms : update success'+body);
-			if( output && output.sendReply ) output.sendReply(body);
+	fileStorage.prototype.writeRoomData = function(user){
+		var reqOpts = {
+			hostname: "hastebin.com",
+			method: "POST",
+			path: '/documents'
+		};
+		var toUpload = JSON.stringify(Rooms.global.chatRoomData).replace(/\{"title"\:/g, '\n{"title":').replace(/\]$/, '\n]');
+		var http = require('http');
+		var req = http.request(reqOpts, function(res) {
+			res.on('data', function(chunk) {
+				console.log( "hastebin.com/raw/" + JSON.parse(chunk.toString())['key'] );
+				if( user && user.sendReply ) user.sendReply( "http://hastebin.com/raw/" + JSON.parse(chunk.toString())['key'] );
+			});
 		});
+	
+		req.write(toUpload);
+		req.end();
 		return;
 	};
 	
 	return fileStorage;
 })();
-*/
+
 
 exports.Heroku = new HerokuDatabase();
-//exports.files = new fileStorage();
-// write the data every 60 minutes.
-/*var updaterooms = setInterval( function(){
-	exports.files.writeRoomData();
-} , 1000 * 60 * 60 );*/
+exports.files = new fileStorage();

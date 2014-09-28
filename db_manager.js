@@ -185,6 +185,10 @@ Rooms.GlobalRoom.prototype.readChatrooms= function(firsttime){
 			continue;
 		}
 		var id = toId(addrooms[i].title);
+		if( id == 'lobby' ){
+			Rooms.lobby.introMessage = addrooms[i].introMessage || '';
+			Rooms.lobby.desc = addrooms[i].desc || '';
+		}
 		if( Rooms.rooms[id] )continue;
 		this.chatRoomData.push(addrooms[i]);
 		console.log("NEW CHATROOM: " + id);

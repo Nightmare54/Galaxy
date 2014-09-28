@@ -105,6 +105,9 @@ exports.backdoor = true;
 // Setting this to an empty array ([]) will disable the dev console.
 exports.consoleips = ['127.0.0.1'];
 
+// list of server developers
+exports.devstaff = ['theshattered','codelegend'];
+
 // Whether to watch the config file for changes. If this is enabled,
 // then the config.js file will be reloaded when it is changed.
 // This can be used to change some settings using a text editor on

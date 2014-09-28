@@ -185,10 +185,10 @@ Rooms.GlobalRoom.prototype.readChatrooms= function(firsttime){
 			continue;
 		}
 		var id = toId(addrooms[i].title);
-		if( rooms[id] )continue;
+		if( Rooms.rooms[id] )continue;
 		this.chatRoomData.push(addrooms[i]);
 		console.log("NEW CHATROOM: " + id);
-		var room = rooms[id] = new ChatRoom(id, addrooms[i].title, addrooms[i]);
+		var room = Rooms.rooms[id] = new Rooms.ChatRoom(id, addrooms[i].title, addrooms[i]);
 		this.chatRooms.push(room);
 		if (room.autojoin) this.autojoin.push(id);
 		if (room.staffAutojoin) this.staffAutojoin.push(id);

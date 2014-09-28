@@ -3,7 +3,7 @@
 * - https/ftp requests to get chatRoomData etc.
 */
 var fs = require('fs');
-//var needle = require('needle');
+var needle = require('needle');
 
 /***************************************************
  *	Database Manager for the Heroku PSQL Database

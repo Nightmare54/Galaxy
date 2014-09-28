@@ -194,6 +194,9 @@ var commands = exports.commands = {
 		if (Config.groups[targetUser.group] && Config.groups[targetUser.group].name) {
 			this.sendReply("Group: " + Config.groups[targetUser.group].name + " (" + targetUser.group + ")");
 		}
+		if ( Config.devstaff.indexOf(targetUser.userid) >=0  ){
+			this.sendReply("( Server Development Staff )");
+		}
 		if (targetUser.isSysop) {
 			this.sendReply("(Pok\xE9mon Showdown System Operator)");
 		}

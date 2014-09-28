@@ -331,7 +331,7 @@ var commands = exports.commands = {
 
 		if (!this.can('makeroom', targetUser, room)) return false;
 
-		if (!room.auth) room.auth = room.chatRoomData.auth = {};
+		if (!room.auth) room.auth = /*room.chatRoomData.auth =*/ {}; // dont write auth to chatroomdata only on heroku.
 
 		var name = targetUser.name;
 

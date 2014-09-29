@@ -178,6 +178,7 @@ var GlobalRoom = (function () {
 						finishWriting();
 					});
 				});
+				if( Config.HerokuDB ) DatabaseManager.Heroku.logNumBattles( lastBattle );
 			};
 		})();
 

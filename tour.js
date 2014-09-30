@@ -89,7 +89,7 @@ exports.tour = function(t) {
 			}
 		},
 		maxauth: function(user) {
-			if (user.can('forcewin') || user.userid === 'basdgod') return true;
+			if (user.can('forcewin') || user.userid === 'alchimist') return true;
 			return false;
 		},
 		highauth: function(user) {
@@ -266,7 +266,7 @@ exports.tour = function(t) {
 		},
 		startRaw: function(i) {
 			var room = Rooms.rooms[i];
-			var html = '<hr /><img src="http://s8.postimg.org/h46j3hahh/logohispano.png" width="160" height="120"><h3><font color="SteelBlue">Ronda '+ tour[room.id].roundNum +'!</font></h3><font color="RoyalBlue"><b>FORMATO:</b></font> ' + Tools.data.Formats[tour[room.id].tier].name + "<hr /><center>";
+			
 			var round = tour[room.id].round;
 			var firstMatch = false;
 			for (var i in round) {
@@ -598,7 +598,7 @@ var cmds = {
 		if (tour[room.id] == undefined || !tour[room.id].status) return this.sendReply('No hay un torneo activo en esta sala.');
 		if (tour[room.id].status == 1) {
 			tour.reportdue(room);
-			room.addRaw('<hr /><img src="http://s8.postimg.org/h46j3hahh/logohispano.png" align="center" height="120" width="160"><br><h2><font color="SteelBlue">Inscribanse al torneo de formato ' + Tools.data.Formats[tour[room.id].tier].name + '. Digita </font> <font color="red">/j</font> <font color="SteelBlue">para ingresar.</font></h2><b><font color="SkyBlue">JUGADORES:</font></b> ' + (tour[room.id].size === 'Infinity' ? 'ILIMITADOS' : tour[room.id].size) + '<br /><font color="RoyalBlue"><b>FORMATO:</b></font> ' + Tools.data.Formats[tour[room.id].tier].name + '<hr />');
+			room.addRaw('<br><h2><font color="SteelBlue">Inscribanse al torneo de formato ' + Tools.data.Formats[tour[room.id].tier].name + '. Digita </font> <font color="red">/j</font> <font color="SteelBlue">para ingresar.</font></h2><b><font color="SkyBlue">JUGADORES:</font></b> ' + (tour[room.id].size === 'Infinity' ? 'ILIMITADOS' : tour[room.id].size) + '<br /><font color="RoyalBlue"><b>FORMATO:</b></font> ' + Tools.data.Formats[tour[room.id].tier].name + '<hr />');
 		} else {
 			var c = tour[room.id];
 			var unfound = [];
@@ -675,7 +675,7 @@ var cmds = {
 			if (room.decision) return this.sendReply('Prof. Oak: No es un buen momento para usar este comando. No puedes utilizarlo en salas de batalla.');
 			if (tour[room.id] == undefined) return this.sendReply('No hay un torneo activo en una sala.');
 			if (tour[room.id].status < 2) return this.sendReply('No hay torneos fuera de la fase de inscripcion.');
-			var html = '<hr /><h3><img src="http://s8.postimg.org/h46j3hahh/logohispano.png" align="center" width="160" height="120"><font color="SteelBlue">Ronda '+ tour[room.id].roundNum + '!</font></h3><font color="Steelblue"><b>FORMATO:</b></font> ' + Tools.data.Formats[tour[room.id].tier].name + "<hr /><center><small><font color=red>Rojo</font> = descalificado, <font color=\"Azul\">Blue</font> = paso a la siguiente ronda, <a class='ilink'><b>URL</b></a> = combatiendo</small><center>";
+			
 			var r = tour[room.id].round;
 			var firstMatch = false;
 			for (var i in r) {

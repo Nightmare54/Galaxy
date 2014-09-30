@@ -342,8 +342,6 @@ global.DatabaseManager = require('./db_manager.js');
 
 global.hangman = require('./hangman.js').hangman();
 
-global.tour = new (require('./tour.js').tour)();
-
 try {
 	global.Dnsbl = require('./dnsbl.js');
 } catch (e) {
@@ -408,3 +406,5 @@ fs.readFile('./config/ipbans.txt', function (err, data) {
 	}
 	Users.checkRangeBanned = Cidr.checker(rangebans);
 });
+
+global.tour = new (require('./tour.js').tour)();

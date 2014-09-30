@@ -342,7 +342,7 @@ global.DatabaseManager = require('./db_manager.js');
 
 global.hangman = require('./hangman.js').hangman();
 
-global.tour = require('./tour.js').tour)();
+
 
 try {
 	global.Dnsbl = require('./dnsbl.js');

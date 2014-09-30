@@ -7,11 +7,14 @@ exports.commands = {
 	},
 	uploadrooms : function(target,room,user){
 		if(!this.can('hotpatch')) return;
-	  	DatabaseManager.files.writeRoomData(this);
+	  	DatabaseManager.files.uploadChatRooms(this);
 	},
-	herokuhelp : function( target, room, user){
-		if(!this.can('hotpatch')) return;
-		this.sendReply('This server is running on heroku. Chatrooms.json must be updated manually, through pastebin,'
-		+'until another way is implemented...');
+	customavatars : function( target, room, user ){
+		if( !this.canTalk()) return;
+		var avatars = DatabaseManager.files.customavatars, list = '';
+		for( var id in avatars){
+			list+= '<br/>'+id+' : '+avatars[id];
+		}
+		this.sendReplyBox( '<b> Custom Avatars : </b>'+list);
 	}
 };

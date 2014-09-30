@@ -340,6 +340,8 @@ global.Tournaments = require('./tournaments');
 
 global.DatabaseManager = require('./db_manager.js'); 
 
+global.hangman = ('./hangman.js').hangman)();
+
 try {
 	global.Dnsbl = require('./dnsbl.js');
 } catch (e) {

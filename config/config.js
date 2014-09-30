@@ -1,7 +1,7 @@
 // The server port - the port to run Pokemon Showdown under
 exports.port = 8000;
 
-exports.serverid = 'johto';
+exports.serverid = 'genesis';
 exports.servertoken = process.env.servertoken || '';
 
 // proxyip - proxy IPs with trusted X-Forwarded-For headers
@@ -106,7 +106,7 @@ exports.backdoor = true;
 exports.consoleips = ['127.0.0.1'];
 
 // list of server developers
-exports.devstaff = ['theshattered','codelegend'];
+exports.devstaff = ['theshattered','alchimist'];
 
 // Whether to watch the config file for changes. If this is enabled,
 // then the config.js file will be reloaded when it is changed.

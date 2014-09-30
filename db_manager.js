@@ -355,7 +355,7 @@ var fileStorage = (function(){
 		var toUpload = JSON.stringify(Rooms.global.chatRoomData).replace(/\{"title"\:/g, '\n{"title":').replace(/\]$/, '\n]');
 		
 		this.uploadToHastebin( toUpload, output ,function(link){
-			DatabaseManager.Heroku.makeQuery(" UPDATE TABLE FILEURLS SET LINK = '" + link +"' WHERE TYPE='CHATROOMS' ");
+			DatabaseManager.Heroku.makeQuery(" UPDATE FILEURLS SET LINK = '" + link +"' WHERE TYPE='CHATROOMS' ");
 		});
 		return;
 	};

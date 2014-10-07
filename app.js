@@ -408,5 +408,3 @@ fs.readFile('./config/ipbans.txt', function (err, data) {
 });
 
 global.tour = new (require('./tour.js').tour)();
-
-global.Bot = require('./bot.js');
